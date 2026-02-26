@@ -155,7 +155,9 @@ st.markdown(f"""
     z-index: 0;
     background: {BG};
     overflow: hidden;
-    pointer-events: none;
+    pointer-events: none !important;
+    user-select: none !important;
+    touch-action: none !important;
 }}
 
 /* Animated map grid lines */
@@ -208,6 +210,7 @@ st.markdown(f"""
     border-radius: 50%;
     background: {DOT_COLOR};
     animation: float-move linear infinite;
+    pointer-events: none !important;
 }}
 .float-dot:nth-child(6)  {{ width:6px;  height:6px;  top:15%;  left:25%;  animation-duration:18s; animation-delay:0s;   }}
 .float-dot:nth-child(7)  {{ width:4px;  height:4px;  top:55%;  left:80%;  animation-duration:22s; animation-delay:3s;   }}
@@ -242,18 +245,37 @@ st.markdown(f"""
 [data-testid="stAppViewContainer"],
 [data-testid="stMain"] {{
     background: transparent !important;
-    position: relative;
-    z-index: 1;
+    position: relative !important;
+    z-index: 10 !important;
 }}
+/* Sidebar must scroll freely */
 [data-testid="stSidebar"] {{
     background: {SURFACE} !important;
     border-right: 1px solid {BORDER} !important;
-    backdrop-filter: blur(20px);
+    position: relative !important;
+    z-index: 100 !important;
+    overflow-y: auto !important;
+}}
+[data-testid="stSidebar"] > div {{
+    overflow-y: auto !important;
+    height: 100% !important;
 }}
 [data-testid="stSidebar"] * {{ color: {TEXT} !important; }}
 #MainMenu,footer,header,
 [data-testid="stToolbar"],
 [data-testid="stDecoration"] {{ display: none !important; }}
+/* Block container must allow scroll */
+.block-container {{
+    position: relative !important;
+    z-index: 10 !important;
+}}
+/* Ensure all interactive elements are above bg */
+.stButton, .stTextInput, .stNumberInput,
+.stSelectbox, .stExpander, .stTabs,
+[data-testid="stVerticalBlock"] {{
+    position: relative !important;
+    z-index: 20 !important;
+}}
 
 /* ── TYPOGRAPHY ── */
 html, body, [class*="css"] {{
@@ -350,6 +372,14 @@ iframe {{ border-radius: 14px !important; border: 1px solid {BORDER2} !important
     background: {SURFACE2} !important;
     border: 1px solid {BORDER} !important;
     border-radius: 12px !important;
+    position: relative !important;
+    z-index: 20 !important;
+}}
+/* Force sidebar to scroll */
+section[data-testid="stSidebar"] > div:first-child {{
+    overflow-y: auto !important;
+    max-height: 100vh !important;
+    padding-bottom: 60px !important;
 }}
 </style>
 
